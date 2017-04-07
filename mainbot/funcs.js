@@ -11,7 +11,8 @@ exports.createChar = function(user, User, msg, items, funcs) {
 					str: 10,
 					vit: 10,
 					dex: 10
-				}
+				},
+				gold: 100,
 				lvl: 1,
 				exp: 0,
 				inventory: [items.armor.starterHealm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],

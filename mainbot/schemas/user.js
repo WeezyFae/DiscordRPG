@@ -8,7 +8,8 @@ var UserSchema = Schema({
 		str: Number,
 		vit: Number,
 		dex: Number
-	}
+	},
+	gold: Number,
 	lvl: Number,
 	exp: Number,
 	inventory: Array,

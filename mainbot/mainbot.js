@@ -22,6 +22,10 @@ client.on('ready', () => {
 	console.log("I am working master");
 });
 
+client.on('guildMemberAdd', member => {
+	member.sendMessage(member.user + ' Welcome to ' + guild.name);
+});
+
 client.on('message', msg => {
 	if (msg.content == prefix + "create char") {
 		funcs.createChar(msg.author, User, msg, items, funcs);
