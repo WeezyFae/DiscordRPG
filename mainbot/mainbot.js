@@ -1,11 +1,15 @@
 const Discord = require("discord.js"),
 	client = new Discord.Client()
 	mongoose = require("mongoose"),
+	UserSchema = require('./schemas/user'),
+	items = require('../items/index'),
 	config = require('./config.json'),
+	funcs = require('./funcs'),
 	token = config.token,
 	prefix = '&';
 
-mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/rpg")
+mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
+var User = mongoose.model("users", UserSchema);
 
 var dialog = ["weird dialog", "thing two"];
 

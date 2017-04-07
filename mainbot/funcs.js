@@ -83,11 +83,12 @@ exports.equipp = function(user, User, msg) {
 }
 
 exports.inventory = function(user, User, msg) {
-	User.find({id: user.id}, function(err, usser) {
+	User.findOne({id: user.id}, function(err, usser) {
+		console.log(usser);
 		var ms = "";
-		for (i = 0; i < usser[0].inventory.length; i++) {
-			ms += usser[0].inventory[i].name;
-			if (usser[0].inventory.length > 1) {
+		for (i = 0; i < usser.inventory.length; i++) {
+			ms += usser.inventory[i].name;
+			if (usser.inventory.length > 1) {
 				ms += ", "
 			}
 		}
