@@ -15,9 +15,6 @@ var overSeer = new npc.normal("overSeer", dialog);
 client.login(token);
 
 client.on('ready', () => {
-	client.guilds.forEach(server => {
-		server.defaultChannel.sendMessage("I " + overSeer.name + ", HAVE ARISEN!");
-	});
 	console.log("I am working master");
 });
 
