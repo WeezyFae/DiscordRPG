@@ -1,12 +1,13 @@
-const mongoose = require("mongoose"),
-	Schema = mongoose.Schema;
+const mong = require("mongoose")
+	Schema = mong.Schema;
 
-var User = new Schema({
+var UserSchema = Schema({
 	id: String,
 	name: String,
 	lvl: Number,
-	xp: Number,
-	items: Array,
+	exp: Number,
+	inventory: Array,
+	equipped: Array,
 	moves: {
 		move1: {
 			name: String,
@@ -27,4 +28,4 @@ var User = new Schema({
 	}
 });
 
-module.exports = User;
+module.exports = UserSchema;
