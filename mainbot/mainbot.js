@@ -19,10 +19,13 @@ client.on('ready', () => {
 });
 
 client.on('message', msg => {
-	if (msg.mentions.users.first() == client.user) {
-		let ms = msg.content.split(" ");
-		if (ms[1] = 'Hello') {
-			msg.reply(overSeer.rdialog());
-		}
+	if (msg.content == prefix + "create char") {
+		funcs.createChar(msg.author, User, msg, items, funcs);
+	}
+	if (msg.content.startsWith(prefix + 'equipp')) {
+		funcs.equipp(msg.author, User, msg);
+	}
+	if (msg.content == prefix + 'inventory') {
+		funcs.inventory(msg.author, User, msg);
 	}
 })
