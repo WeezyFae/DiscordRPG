@@ -1,12 +1,14 @@
 
 exports.healthPotion = {
 	name: "Health Potion",
-	effect: "Heals some of your hp",
+	description: "Heals some of your hp",
+	price: 10,
 	heal: 40
 }
 
 exports.StayAwayPotion = {
 	name: "Stay Away Potion",
-	effect: "makes things not fight you",
+	description: "makes things not fight you",
+	price: 100
 	//code to make chance go down here
 }

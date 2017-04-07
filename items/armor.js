@@ -5,6 +5,7 @@ wise */
 exports.creatersHealm = {
 	name: "Creaters Healm",
 	description: "Healm wore by the Creaters",
+	price: 10000000,
 	armor: 200,
 	type: "Healm"
 }
@@ -12,6 +13,7 @@ exports.creatersHealm = {
 exports.creatersChest = {
 	name: "Creaters Chest",
 	description: "Chest wore by the Creaters",
+	price: 10000000,
 	armor: 230,
 	type: "Chest"
 }
@@ -19,6 +21,7 @@ exports.creatersChest = {
 exports.creatersGauntlets = {
 	name: "Creaters Gauntlets",
 	description: "Gauntlets wore by the Creaters",
+	price: 10000000,
 	armor: 190,
 	type: "Gauntlets"
 }
@@ -26,6 +29,7 @@ exports.creatersGauntlets = {
 exports.creatersBoots = {
 	name: "Creaters Boots",
 	description: "Boots wore by the Creaters",
+	price: 10000000,
 	armor: 190,
 	type: "Boots"
 }
@@ -33,6 +37,7 @@ exports.creatersBoots = {
 exports.starterHealm = {
 	name: "Starter Healm",
 	description: "Healm for Begginers",
+	price: 0,
 	armor: 4,
 	type: "Healm"
 }
@@ -40,6 +45,7 @@ exports.starterHealm = {
 exports.starterChest = {
 	name: "Starter Chest",
 	description: "Chest for Begginers",
+	price: 0,
 	armor: 6,
 	type: "Chest"
 }
@@ -47,6 +53,7 @@ exports.starterChest = {
 exports.starterGauntlets = {
 	name: "Starter Gauntlets",
 	description: "Gauntlets for Begginers",
+	price: 0,
 	armor: 3,
 	type: "Gauntlets"
 }
@@ -54,6 +61,7 @@ exports.starterGauntlets = {
 exports.starterBoots = {
 	name: "Starter Boots",
 	description: "Boots for Begginers",
+	price: 0,
 	armor: 3,
 	type: "Boots"
 }
