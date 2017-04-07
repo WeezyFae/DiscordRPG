@@ -1,6 +1,7 @@
 
 exports.healthPotion = {
 	name: "Health Potion",
+	effect: "Heals some of your hp",
 	heal: 40
 }
 
