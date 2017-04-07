@@ -7,6 +7,11 @@ exports.createChar = function(user, User, msg, items, funcs) {
 			var newuser = new User({
 				id: user.id,
 				name: user.username,
+				stats: {
+					str: 10,
+					vit: 10,
+					dex: 10
+				}
 				lvl: 1,
 				exp: 0,
 				inventory: [items.armor.starterHealm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],
