@@ -1,16 +1,11 @@
 const Discord = require('discord.js'),
 	client = new Discord.Client(),
-	mongoose = require('mongoose'),
-	UserSchema = require('../database/schemas/user'),
 	items = require('../items/index'),
 	config = require('./config.json'),
 	npc = require('../npcbases/index'),
 	token = config.token,
 	prefix = "@";
 
-
-mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
-var User = mongoose.model("users", UserSchema);
 
 var dialog = ["Hello there feel free to check my shop", "I have items in my shop"];
 

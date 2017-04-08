@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"),
 	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
-	Disocord = require('discord.js');
+	Discord = require('discord.js');
 
 
 mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
@@ -51,7 +51,7 @@ exports.createChar = function(msg) {
 				if (err) {
 					msg.reply("something went wrong");
 				}
-				msg.channel.sendMessage("Character: " + user.username + ", has been created");
+				msg.channel.sendMessage("Character: " + msg.author.username + ", has been created");
 				exports.tutorial(msg);
 			})
 		}
@@ -96,12 +96,12 @@ exports.equipp = function(msg) {
 }
 
 exports.inventory = function(msg) {
-	User.findOne({id: msg.author.id}, function(err, usser) {
-		console.log(usser);
+	User.findOne({id: msg.author.id}, function(err, user) {
 		var ms = "";
-		for (i = 0; i < usser.inventory.length; i++) {
-			ms += usser.inventory[i].name;
-			if (usser.inventory.length > 1) {
+		console.log(user.inventory)
+		for (i = 0; i < user.inventory.length; i++) {
+			ms += user.inventory[i].name;
+			if (user.inventory.length > 1) {
 				ms += ", "
 			}
 		}
@@ -112,7 +112,7 @@ exports.inventory = function(msg) {
 exports.info = function(msg) {
 	User.findOne({id: msg.author.id}, function(err, usser) {
 		const embed = new Discord.RichEmbed()
-		.setTitle("Character Info")
+		.setTitle("Character Info", "gold:" + usser.gold)
 		.setAuthor(msg.author.username, msg.author.avatarURL)
 
 		.setColor(0x00AE86)

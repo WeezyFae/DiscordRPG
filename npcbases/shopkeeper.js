@@ -49,20 +49,24 @@ class shopkeeper extends npc {
 	}
 
 	selling(itemname, msg) {
-		User.find({id: msg.author.id}, function(err, usser) {
+		var itemsold = false;
+		var iprice;
+		User.findOne({id: msg.author.id}, function(err, usser) {
 			if (err) console.error(err);
-			for (var h = 0; h < usser[0].inventory.length; h++) {
-				if (itemname == usser[0].inventory[h].name) {
-					var iprice = usser[0].inventory[h].price;
-					usser[0].gold += usser[0].inventory[h].price;
-					usser[0].inventory.splice(h, 1);
-					msg.reply("you have sold " + itemname + " for " + iprice);
-					usser[0].save(function(err, ussser) {
+			for (var h = 0; h < usser.inventory.length; h++) {
+				if (itemname == usser.inventory[h].name) {
+					iprice = usser.inventory[h].price;
+					usser.gold += usser.inventory[h].price;
+					usser.inventory.splice(h, 1);
+					usser.save(function(err, ussser) {
+						msg.reply("you have sold " + itemname + " for " + iprice);
+						itemsold = true;
 						return;
 					});
+				} if (h = usser.inventory.length && itemsold == false) {
+					msg.reply("you dont have that item to sell");
 				}
 			}
-			msg.reply("You dont have " + itemname + " to sell");
 		});
 	}
 }

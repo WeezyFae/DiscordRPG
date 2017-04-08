@@ -2,9 +2,9 @@
 have some cool armor ideas to add to the game either way its organized by sets and alphabetical
 wise */
 
-exports.creatersHealm = {
-	name: "Creaters Healm",
-	description: "Healm wore by the Creaters",
+exports.creatersHelm = {
+	name: "Creaters Helm",
+	description: "Healm wore by the Creators",
 	price: 10000000,
 	armor: 200,
 	type: "Healm"
@@ -12,7 +12,7 @@ exports.creatersHealm = {
 
 exports.creatersChest = {
 	name: "Creaters Chest",
-	description: "Chest wore by the Creaters",
+	description: "Chest wore by the Creators",
 	price: 10000000,
 	armor: 230,
 	type: "Chest"
@@ -20,7 +20,7 @@ exports.creatersChest = {
 
 exports.creatersGauntlets = {
 	name: "Creaters Gauntlets",
-	description: "Gauntlets wore by the Creaters",
+	description: "Gauntlets wore by the Creators",
 	price: 10000000,
 	armor: 190,
 	type: "Gauntlets"
@@ -28,14 +28,14 @@ exports.creatersGauntlets = {
 
 exports.creatersBoots = {
 	name: "Creaters Boots",
-	description: "Boots wore by the Creaters",
+	description: "Boots wore by the Creators",
 	price: 10000000,
 	armor: 190,
 	type: "Boots"
 }
 
-exports.starterHealm = {
-	name: "Starter Healm",
+exports.starterHelm = {
+	name: "Starter Helm",
 	description: "Healm for beginners",
 	price: 0,
 	armor: 4,
