@@ -8,7 +8,7 @@ exports.healthPotion = {
 
 exports.StayAwayPotion = {
 	name: "Stay Away Potion",
-	description: "makes things not fight you",
+	description: "Makes things not fight you",
 	price: 100
 	//code to make chance go down here
 }

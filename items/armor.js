@@ -36,7 +36,7 @@ exports.creatersBoots = {
 
 exports.starterHealm = {
 	name: "Starter Healm",
-	description: "Healm for Begginers",
+	description: "Healm for beginners",
 	price: 0,
 	armor: 4,
 	type: "Healm"
@@ -44,7 +44,7 @@ exports.starterHealm = {
 
 exports.starterChest = {
 	name: "Starter Chest",
-	description: "Chest for Begginers",
+	description: "Chest for beginners",
 	price: 0,
 	armor: 6,
 	type: "Chest"
@@ -52,7 +52,7 @@ exports.starterChest = {
 
 exports.starterGauntlets = {
 	name: "Starter Gauntlets",
-	description: "Gauntlets for Begginers",
+	description: "Gauntlets for beginners",
 	price: 0,
 	armor: 3,
 	type: "Gauntlets"
@@ -60,7 +60,7 @@ exports.starterGauntlets = {
 
 exports.starterBoots = {
 	name: "Starter Boots",
-	description: "Boots for Begginers",
+	description: "Boots for beginners",
 	price: 0,
 	armor: 3,
 	type: "Boots"
