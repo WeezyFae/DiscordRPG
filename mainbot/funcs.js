@@ -24,7 +24,7 @@ exports.createChar = function(msg) {
 				gold: 100,
 				lvl: 1,
 				exp: 0,
-				inventory: [items.armor.starterHealm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],
+				inventory: [items.armor.starterHelm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],
 				equipped: [],
 				moves: {
 					move1: {
