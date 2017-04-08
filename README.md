@@ -1,7 +1,10 @@
-# DiscordRPG
+DiscordRPG
+==========
 
-##Version: 0.1.0
-##Features
+Version: 0.1.0
+--------------
+Features
+--------
 1.NPC's
  * Shop Keepers
  * Lore Holders
@@ -10,7 +13,8 @@
  * Equipping
  * Buying
  * Selling
-##Implenting
+Implenting
+----------
 1.NPC's
  * Quests
 2.Character
@@ -20,5 +24,6 @@
  * trading
 
 
-#Info
+Info
+====
 [Discord Link (will be here soon)]()
