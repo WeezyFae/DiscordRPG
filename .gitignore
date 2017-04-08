@@ -30,6 +30,10 @@ build/Release
 node_modules
 jspm_packages
 
+# config.jsons
+
+config.json
+
 # Optional npm cache directory
 .npm
 
