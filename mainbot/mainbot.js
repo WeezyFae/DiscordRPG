@@ -1,20 +1,12 @@
 const Discord = require("discord.js"),
 	client = new Discord.Client(),
-	mongoose = require("mongoose"),
-	UserSchema = require('./schemas/user'),
-	items = require('../items/index'),
 	config = require('./config.json'),
 	funcs = require('./funcs'),
 	token = config.token,
 	prefix = '&';
 
-mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
-var User = mongoose.model("users", UserSchema);
-
-var dialog = ["weird dialog", "thing two"];
-
 var npc = require('../npcbases/index.js');
-var overSeer = new npc.normal("overSeer", dialog);
+var overSeer = new npc.normal("overSeer");
 
 client.login(token);
 
@@ -28,15 +20,15 @@ client.on('guildMemberAdd', member => {
 
 client.on('message', msg => {
 	if (msg.content == prefix + "create char") {
-		funcs.createChar(msg.author, User, msg, items, funcs);
+		funcs.createChar(msg);
 	}
 	if (msg.content.startsWith(prefix + 'equipp')) {
-		funcs.equipp(msg.author, User, msg);
+		funcs.equipp(msg);
 	}
 	if (msg.content == prefix + 'inventory') {
-		funcs.inventory(msg.author, User, msg);
+		funcs.inventory(msg);
 	}
 	if (msg.content == prefix + 'info') {
-		funcs.info(msg, User, Discord);
+		funcs.info(msg);
 	}
 })

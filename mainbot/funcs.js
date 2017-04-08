@@ -1,12 +1,21 @@
-exports.createChar = function(user, User, msg, items, funcs) {
-	User.find({id: user.id}, function(err, usser) {
+const mongoose = require("mongoose"),
+	UserSchema = require('./schemas/user'),
+	items = require('../items/index'),
+	Disocord = require('discord.js');
+
+
+mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
+var User = mongoose.model("users", UserSchema);
+
+exports.createChar = function(msg) {
+	User.find({id: msg.author.id}, function(err, usser) {
 		if (err) throw err;
 		if (usser.length) {
 			msg.reply("user already exists");
 		}else {
 			var newuser = new User({
-				id: user.id,
-				name: user.username,
+				id: msg.author.id,
+				name: msg.author.username,
 				stats: {
 					str: 10,
 					vit: 10,
@@ -43,19 +52,19 @@ exports.createChar = function(user, User, msg, items, funcs) {
 					msg.reply("something went wrong");
 				}
 				msg.channel.sendMessage("Character: " + user.username + ", has been created");
-				funcs.tutorial(msg.author, User, msg);
+				exports.tutorial(msg);
 			})
 		}
 	});
 }
 
-exports.tutorial = function(user, User, msg) {
+exports.tutorial = function(msg) {
 	msg.reply("Now for a simple Tutorial. we're going to go over how to equipp items first, all you do is type `equipp itemname` replace itemname with the items name use `inventory` to check your inventory");
 }
 
-exports.equipp = function(user, User, msg) {
+exports.equipp = function(msg) {
 	var itemname = msg.content.slice(8);
-	User.find({id: user.id}, function(err, usser) {
+	User.find({id: msg.author.id}, function(err, usser) {
 		for(i = 0; i < usser[0].inventory.length; i++) {
 			if (usser[0].inventory[i].name == itemname) {
 				var Item = usser[0].inventory[i];
@@ -86,8 +95,8 @@ exports.equipp = function(user, User, msg) {
 	})
 }
 
-exports.inventory = function(user, User, msg) {
-	User.findOne({id: user.id}, function(err, usser) {
+exports.inventory = function(msg) {
+	User.findOne({id: msg.author.id}, function(err, usser) {
 		console.log(usser);
 		var ms = "";
 		for (i = 0; i < usser.inventory.length; i++) {
@@ -100,7 +109,7 @@ exports.inventory = function(user, User, msg) {
 	});
 }
 
-exports.info = function(msg, User, Discord) {
+exports.info = function(msg) {
 	User.findOne({id: msg.author.id}, function(err, usser) {
 		const embed = new Discord.RichEmbed()
 		.setTitle("Character Info")

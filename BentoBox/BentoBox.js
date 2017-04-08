@@ -29,11 +29,11 @@ client.on('message', msg => {
 	};
 	if (msg.content.startsWith(prefix + "buy")) {
 		var itemname = msg.content.slice(5);
-		BentoBox.buying(itemname, msg, User);
+		BentoBox.buying(itemname, msg);
 	};
 	if (msg.content.startsWith(prefix + "sell")) {
 		var itemname = msg.content.slice(6);
-		BentoBox.selling(itemname, msg, User);
+		BentoBox.selling(itemname, msg);
 	}
 });
 

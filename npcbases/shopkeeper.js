@@ -1,4 +1,9 @@
-const npc = require('./npc');
+const npc = require('./npc'),
+	mongoose = require('mongoose'),
+	UserSchema = require('../database/schemas/user');
+
+mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
+var User = mongoose.model("users", UserSchema);
 var that;
 
 class shopkeeper extends npc {
@@ -21,7 +26,7 @@ class shopkeeper extends npc {
 		msg.reply(itemss);
 	}
 
-	buying(itemname, msg, User) {
+	buying(itemname, msg) {
 		User.find({id: msg.author.id}, function(err, usser) {
 			for (var k = 0; k < that.items.length; k ++) {
 				if (itemname == that.items[k].name) {
@@ -43,7 +48,7 @@ class shopkeeper extends npc {
 		});
 	}
 
-	selling(itemname, msg, User) {
+	selling(itemname, msg) {
 		User.find({id: msg.author.id}, function(err, usser) {
 			if (err) console.error(err);
 			for (var h = 0; h < usser[0].inventory.length; h++) {
