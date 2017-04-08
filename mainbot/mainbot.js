@@ -37,6 +37,6 @@ client.on('message', msg => {
 		funcs.inventory(msg.author, User, msg);
 	}
 	if (msg.content == prefix + 'info') {
-		funcs.info();
+		funcs.info(msg, User, Discord);
 	}
 })

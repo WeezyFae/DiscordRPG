@@ -25,7 +25,7 @@ class shopkeeper extends npc {
 		User.find({id: msg.author.id}, function(err, usser) {
 			for (var k = 0; k < that.items.length; k ++) {
 				if (itemname == that.items[k].name) {
-					if (usser[0].gold <= that.items[k].price) {
+					if (usser[0].gold >= that.items[k].price) {
 						usser[0].gold -= that.items[k].price;
 						usser[0].inventory.push(that.items[k]);
 						usser[0].save(function(err, ussser) {

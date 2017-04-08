@@ -100,8 +100,17 @@ exports.inventory = function(user, User, msg) {
 	});
 }
 
-exports.info = function(user, User, msg) {
-	User.findOne({id: user.id}, function(err, usser) {
+exports.info = function(msg, User, Discord) {
+	User.findOne({id: msg.author.id}, function(err, usser) {
+		const embed = new Discord.RichEmbed()
+		.setTitle("Character Info")
+		.setAuthor(msg.author.username, msg.author.avatarURL)
 
+		.setColor(0x00AE86)
+		.addField("stats", "list of stats")
+		.addField("str", usser.stats.str)
+		.addField("vit", usser.stats.vit)
+		.addField("dex", usser.stats.dex)
+		msg.channel.sendEmbed(embed);
 	});
 }
