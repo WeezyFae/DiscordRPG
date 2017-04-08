@@ -61,18 +61,19 @@ exports.equipp = function(user, User, msg) {
 				var Item = usser[0].inventory[i];
 				for (j = 0; j < usser[0].equipped.length; j++) {
 					if (Item.type == usser[0].equipped[j].type) {
+						var UI = usser[0].equipped[j].name;
 						usser[0].equipped.push(Item);
-						usser[0].inventory.splice(usser[0].inventory[i], 1);
+						usser[0].inventory.splice(j, 1);
 						usser[0].inventory.push(usser[0].equipped[j]);
-						usser[0].equipped.splice(usser[0].equipped[j], 1);
-						msg.reply(Item.name + ": Has been equipped and " + usser[0].equipped[j].name + ": has been unequipped");
+						usser[0].equipped.splice(j, 1);
+						msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped");
 						usser[0].save(function(err, ussser) {
 							return;
 						});
 					}
 				}
 				usser[0].equipped.push(Item);
-				usser[0].inventory.splice(usser[0].inventory[i], 1);
+				usser[0].inventory.splice(i, 1);
 				msg.reply(Item.name + ": Has been equipped");
 				usser[0].save(function(err, ussser) {
 					return;

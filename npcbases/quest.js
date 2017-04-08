@@ -1,5 +1,7 @@
 const npc = require('./npc');
 
+// still work in progress
+
 class quest extends npc {
 	quest(name, description, reward, reward2, reward3) {
 		this.name = name;

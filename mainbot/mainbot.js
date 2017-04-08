@@ -1,5 +1,5 @@
 const Discord = require("discord.js"),
-	client = new Discord.Client()
+	client = new Discord.Client(),
 	mongoose = require("mongoose"),
 	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
@@ -35,5 +35,8 @@ client.on('message', msg => {
 	}
 	if (msg.content == prefix + 'inventory') {
 		funcs.inventory(msg.author, User, msg);
+	}
+	if (msg.content == prefix + 'info') {
+		funcs.info();
 	}
 })
