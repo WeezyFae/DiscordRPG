@@ -1,8 +1,9 @@
 const npc = require('./npc'),
 	mongoose = require('mongoose'),
-	UserSchema = require('../database/schemas/user');
+	UserSchema = require('../database/schemas/user'),
+	config = require('./config.json');
 
-mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
+mongoose.connect(config.url);
 var User = mongoose.model("users", UserSchema);
 var that;
 

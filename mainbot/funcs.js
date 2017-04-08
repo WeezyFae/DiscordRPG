@@ -1,10 +1,11 @@
 const mongoose = require("mongoose"),
 	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
-	Discord = require('discord.js');
+	Discord = require('discord.js'),
+	config = require('../npcbases/config.json');
 
 
-mongoose.connect("mongodb://KingCosmic:Abstuddard9311@ds147070.mlab.com:47070/discordrpg");
+mongoose.connect(config.url);
 var User = mongoose.model("users", UserSchema);
 
 exports.createChar = function(msg) {

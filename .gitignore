@@ -30,8 +30,8 @@ build/Release
 node_modules
 jspm_packages
 
-# config.jsons
-**/config.json
+# not saving config files
+config*
 
 # Optional npm cache directory
 .npm
