@@ -20,7 +20,16 @@ client.on('guildMemberAdd', member => {
 setInterval(battletime, 30000);
 
 function battletime() {
-	
+	client.guilds.get(296681619933102080)
+	.then(Forsaken => {
+		Forsaken.roles.get(&297187308719833099)
+		.then(Plains => {
+			Plains.members.Array().Random()
+			.then(FIGHT => {
+				
+			})
+		})
+	})
 }
 
 client.on('message', msg => {
