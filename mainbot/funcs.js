@@ -116,7 +116,7 @@ exports.info = function(msg) {
 		User.findOne({id: mentioneddude.id}, function(err, usser) {
 			const embed = new Discord.RichEmbed()
 			.setTitle("Character Info", "gold:" + usser.gold)
-			.setAuthor(msg.author.username, msg.author.avatarURL)
+			.setAuthor(mentioneddude.username, mentioneddude.avatarURL)
 
 			.setColor(0x00AE86)
 			.addField("stats", "list of stats")
