@@ -19,16 +19,27 @@ client.on('guildMemberAdd', member => {
 
 setInterval(battletime, 30000);
 
-function battletime() {
-	client.guilds.get(296681619933102080)
-	.then(Forsaken => {
-		Forsaken.roles.get(&297187308719833099)
-		.then(Plains => {
-			Plains.members.Array().Random()
-			.then(FIGHT => {
-				
+function battletime(msg) {
+	if (msg) {
+		overSeer.battling(msg.channel, msg.author);
+	}
+	client.guilds.forEach(Forsaken => {
+		if (Forsaken.id == 296681619933102080) {
+			Forsaken.channels.forEach(channel => {
+				if (channel.id == 296730991853174795) {
+					Forsaken.roles.forEach(Plains => {
+						if (Plains.id == 297187308719833099) {
+							Plains.members.array(members => {
+								members.Random(FIGHT => {
+									overSeer.battling(channel, FIGHT);
+								})
+							})
+						}
+					})
+				}
 			})
-		})
+		}
+	
 	})
 }
 
@@ -47,5 +58,8 @@ client.on('message', msg => {
 	}
 	if (msg.content == prefix + 'bless') {
 		overSeer.blessing(msg);
+	}
+	if (msg.content == prefix + 'battle me') {
+		battletime(msg);
 	}
 })

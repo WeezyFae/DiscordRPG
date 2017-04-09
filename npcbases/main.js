@@ -162,9 +162,95 @@ class main extends npc {
 		});
 	}
 
-	battling(msg) {
-
+	battling(channel, battler) {
+		var enemy = enemies.plains.wolf
+		User.findOne({id: battler.id}, function(err, user) {
+			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
+			.then(() => {
+				channel.awaitMessages(response => response.content.startsWith('move') , {
+					max: 1,
+					time: 30000,
+					errors: ['time'],
+				})
+				.then(collected => {
+					channel.sendMessage(collected.first());
+					attack(collected, enemy, user, channel);
+				})
+				.catch(() => {
+					channel.sendMessage("you didnt make a move in time its the enemies turn");
+					defend(enemy, user);
+				})
+			})
+		})
 	}
+
 }
+
+function attack(collected, enemy, user, channel) {
+		if (collected == 'move 1') {
+			enemy.hp -= user.moves.move1.dmg;
+			if (enenmy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				return;
+			} else {
+				channel.sendMessage("You did " + user.moves.move1.dmg + " lowering its hp to " + enemy.hp);
+				defend(enemy, user, collected);
+			}
+		}
+		if (collected == 'move 2') {
+			enemy.hp -= user.moves.move2.dmg;
+			if (enenmy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				return;
+			} else {
+				channel.sendMessage("You did " + user.moves.move2.dmg + " lowering its hp to " + enemy.hp);
+				defend(enemy, user, collected);
+			}
+		}
+		if (collected == 'move 3') {
+			enemy.hp -= user.moves.move3.dmg;
+			if (enenmy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				return;
+			} else {
+				channel.sendMessage("You did " + user.moves.move3.dmg + " lowering its hp to " + enemy.hp);
+				defend(enemy, user, collected);
+			}
+		}
+		if (collected == 'move 4') {
+			enemy.hp -= user.moves.move4.dmg;
+			if (enenmy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				return;
+			} else {
+				channel.sendMessage("You did " + user.moves.move4.dmg + " lowering its hp to " + enemy.hp);
+				defend(enemy, user, channel);
+			}
+		}
+	}
+
+function defend(enemy, user, channel) {
+		user.hp -= enemy.moves.move1.dmg;
+		if (user.hp <= 0) {
+			channel.sendMessage("You have died D:");
+			return;
+		} else {
+			channel.sendMessage("The monster did " + enemy.moves.move1.dmg + " what will you do?")
+			.then(() => {
+				collected.channel.awaitMessages(response => response.content.startsWith('move'), {
+					max: 1,
+					time: 30000,
+					errors: ['time'],
+				})
+				.then(collected => {
+					attack(collected, user);
+				})
+				.catch(() => {
+					channel.sendMessage("you didnt make a move in time its the enemies turn");
+					defend(enemy, user);
+				})
+			})
+		}
+	}
 
 module.exports = main;
