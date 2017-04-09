@@ -50,7 +50,7 @@ exports.createChar = function(msg) {
 
 			newuser.save(function(err, usser) {
 				if (err) {
-					msg.reply("something went wrong");
+					msg.reply("Something went wrong");
 				}
 				msg.channel.sendMessage("Character: " + msg.author.username + ", has been created");
 				exports.tutorial(msg);
@@ -60,7 +60,7 @@ exports.createChar = function(msg) {
 }
 
 exports.tutorial = function(msg) {
-	msg.reply("Now for a simple Tutorial. we're going to go over how to equipp items first, all you do is type `equipp itemname` replace itemname with the items name use `inventory` to check your inventory");
+	msg.reply("Now for a simple Tutorial. We're going to go over how to equipp items first, all you have to do is type `equipp itemname` replace itemname with the items name. Use `inventory` to check your inventory.");
 }
 
 exports.equipp = function(msg) {
@@ -76,7 +76,7 @@ exports.equipp = function(msg) {
 						usser[0].inventory.splice(j, 1);
 						usser[0].inventory.push(usser[0].equipped[j]);
 						usser[0].equipped.splice(j, 1);
-						msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped");
+						msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped.");
 						usser[0].save(function(err, ussser) {
 							return;
 						});
@@ -84,14 +84,14 @@ exports.equipp = function(msg) {
 				}
 				usser[0].equipped.push(Item);
 				usser[0].inventory.splice(i, 1);
-				msg.reply(Item.name + ": Has been equipped");
+				msg.reply(Item.name + ": Has been equipped.");
 				usser[0].save(function(err, ussser) {
 					return;
 				});
 			}
 		}
 		if (!itemname) {
-			msg.reply("please specify a item");
+			msg.reply("Please specify a item");
 		}
 	})
 }

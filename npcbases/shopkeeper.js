@@ -39,12 +39,12 @@ class shopkeeper extends npc {
 							return;
 						});
 					} else {
-						msg.reply("you dont have enough gold for, " + that.items[k].name);
+						msg.reply("You don't have enough gold for, " + that.items[k].name);
 						return;
 					}
 				}
 			}
-			msg.reply("I'm sorry but I dont have that item");
+			msg.reply("I'm sorry but I don't have that item");
 			return;
 		});
 	}
@@ -60,12 +60,12 @@ class shopkeeper extends npc {
 					usser.gold += usser.inventory[h].price;
 					usser.inventory.splice(h, 1);
 					usser.save(function(err, ussser) {
-						msg.reply("you have sold " + itemname + " for " + iprice);
+						msg.reply("You have sold " + itemname + " for " + iprice);
 						itemsold = true;
 						return;
 					});
 				} if (h = usser.inventory.length && itemsold == false) {
-					msg.reply("you dont have that item to sell");
+					msg.reply("You don't have that item to sell!");
 				}
 			}
 		});

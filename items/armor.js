@@ -3,15 +3,15 @@ have some cool armor ideas to add to the game either way its organized by sets a
 wise */
 
 exports.creatersHelm = {
-	name: "Creaters Helm",
-	description: "Healm wore by the Creators",
+	name: "Creators Helm",
+	description: "Helm wore by the Creators",
 	price: 10000000,
 	armor: 200,
-	type: "Healm"
+	type: "Helm"
 }
 
 exports.creatersChest = {
-	name: "Creaters Chest",
+	name: "Creators Chest",
 	description: "Chest wore by the Creators",
 	price: 10000000,
 	armor: 230,
@@ -19,7 +19,7 @@ exports.creatersChest = {
 }
 
 exports.creatersGauntlets = {
-	name: "Creaters Gauntlets",
+	name: "Creators Gauntlets",
 	description: "Gauntlets wore by the Creators",
 	price: 10000000,
 	armor: 190,
@@ -27,7 +27,7 @@ exports.creatersGauntlets = {
 }
 
 exports.creatersBoots = {
-	name: "Creaters Boots",
+	name: "Creators Boots",
 	description: "Boots wore by the Creators",
 	price: 10000000,
 	armor: 190,
@@ -36,10 +36,10 @@ exports.creatersBoots = {
 
 exports.starterHelm = {
 	name: "Starter Helm",
-	description: "Healm for beginners",
+	description: "Helm for beginners",
 	price: 0,
 	armor: 4,
-	type: "Healm"
+	type: "Helm"
 }
 
 exports.starterChest = {
