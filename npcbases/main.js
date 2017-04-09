@@ -2,6 +2,7 @@ const npc = require('./npc'),
 	mongoose = require("mongoose"),
 	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
+	enemies = require('../enemies/index'),
 	Discord = require('discord.js'),
 	config = require('./config.json');
 
@@ -72,27 +73,27 @@ class main extends npc {
 
 	equipp(msg) {
 		var itemname = msg.content.slice(8);
-		User.find({id: msg.author.id}, function(err, usser) {
-			for(var i = 0; i < usser[0].inventory.length; i++) {
-				if (usser[0].inventory[i].name == itemname) {
-					var Item = usser[0].inventory[i];
-					for (var j = 0; j < usser[0].equipped.length; j++) {
-						if (Item.type == usser[0].equipped[j].type) {
-							var UI = usser[0].equipped[j].name;
-							usser[0].equipped.push(Item);
-							usser[0].inventory.splice(j, 1);
-							usser[0].inventory.push(usser[0].equipped[j]);
-							usser[0].equipped.splice(j, 1);
+		User.findOne({id: msg.author.id}, function(err, usser) {
+			for(var i = 0; i < usser.inventory.length; i++) {
+				if (usser.inventory[i].name == itemname) {
+					var Item = usser.inventory[i];
+					for (var j = 0; j < usser.equipped.length; j++) {
+						if (Item.type == usser.equipped[j].type) {
+							var UI = usser.equipped[j].name;
+							usser.equipped.push(Item);
+							usser.inventory.splice(j, 1);
+							usser.inventory.push(usser[0].equipped[j]);
+							usser.equipped.splice(j, 1);
 							msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped.");
-							usser[0].save(function(err, ussser) {
+							usser.save(function(err, ussser) {
 								return;
 							});
 						}
 					}
-					usser[0].equipped.push(Item);
-					usser[0].inventory.splice(i, 1);
+					usser.equipped.push(Item);
+					usser.inventory.splice(i, 1);
 					msg.reply(Item.name + ": Has been equipped.");
-					usser[0].save(function(err, ussser) {
+					usser.save(function(err, ussser) {
 						return;
 					});
 				}
@@ -159,6 +160,10 @@ class main extends npc {
 				});
 			};
 		});
+	}
+
+	battling(msg) {
+
 	}
 }
 

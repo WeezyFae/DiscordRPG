@@ -17,6 +17,12 @@ client.on('guildMemberAdd', member => {
 	member.sendMessage(member.user + ' Welcome to ' + guild.name);
 });
 
+setInterval(battletime, 30000);
+
+function battletime() {
+	
+}
+
 client.on('message', msg => {
 	if (msg.content == prefix + "create char") {
 		overSeer.createChar(msg);

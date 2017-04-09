@@ -1,5 +1,6 @@
 module.exports = {
-	consumables: require('./consumables'),
-	armor: require('./armor'),
-	weapons: require('./weapons'),
+	materials: require('./materials.js'),
+	consumables: require('./consumables.js'),
+	armor: require('./armor.js'),
+	weapons: require('./weapons.js'),
 }
