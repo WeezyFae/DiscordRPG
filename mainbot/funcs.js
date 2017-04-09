@@ -111,6 +111,11 @@ exports.inventory = function(msg) {
 }
 
 exports.info = function(msg) {
+	var mentioneddude = msg.mentions.users.first();
+	if (mentioneddude) {
+		//code to find mentioned person
+		return;
+	}
 	User.findOne({id: msg.author.id}, function(err, usser) {
 		const embed = new Discord.RichEmbed()
 		.setTitle("Character Info", "gold:" + usser.gold)
