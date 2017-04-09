@@ -113,7 +113,18 @@ exports.inventory = function(msg) {
 exports.info = function(msg) {
 	var mentioneddude = msg.mentions.users.first();
 	if (mentioneddude) {
-		//code to find mentioned person
+		User.findOne({id: mentioneddude.id}, function(err, usser) {
+			const embed = new Discord.RichEmbed()
+			.setTitle("Character Info", "gold:" + usser.gold)
+			.setAuthor(msg.author.username, msg.author.avatarURL)
+
+			.setColor(0x00AE86)
+			.addField("stats", "list of stats")
+			.addField("str", usser.stats.str)
+			.addField("vit", usser.stats.vit)
+			.addField("dex", usser.stats.dex)
+			msg.channel.sendEmbed(embed);
+		});
 		return;
 	}
 	User.findOne({id: msg.author.id}, function(err, usser) {
