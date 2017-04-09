@@ -3,8 +3,8 @@ const npc = require('./npc'),
 	UserSchema = require('../database/schemas/user'),
 	config = require('./config.json');
 
-mongoose.connect(config.url);
-var User = mongoose.model("users", UserSchema);
+/*mongoose.connect(config.url2);
+var User = mongoose.model("users", UserSchema);*/
 var that;
 
 class shopkeeper extends npc {

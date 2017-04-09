@@ -5,7 +5,7 @@ exports.healthPotion = {
 
 exports.stayAwayPotion = {
 	name: "Stay Away Potion",
-	effect: "Causes monsters to avoid the user.",
+	effect: "Causes monsters to avoid the user."
 }
 
 exports.potionOfProtection = {
