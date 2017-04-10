@@ -4,6 +4,8 @@ const mong = require("mongoose")
 var UserSchema = Schema({
 	id: String,
 	name: String,
+	hp: Number,
+	maxhp: Number,
 	stats: {
 		str: Number,
 		vit: Number,

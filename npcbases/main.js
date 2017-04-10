@@ -25,6 +25,8 @@ class main extends npc {
 				var newuser = new User({
 					id: msg.author.id,
 					name: msg.author.username,
+					hp: 100,
+					maxhp: 100,
 					stats: {
 						str: 10,
 						vit: 10,
@@ -61,14 +63,10 @@ class main extends npc {
 						msg.reply("Something went wrong");
 					}
 					msg.channel.sendMessage("Character: " + msg.author.username + ", has been created");
-					main.tutorial(msg);
+					tutorial(msg);
 				})
 			}
 		});
-	}
-
-	tutorial(msg) {
-		msg.reply("Now for a simple Tutorial. We're going to go over how to equipp items first, all you have to do is type `equipp itemname` replace itemname with the items name. Use `inventory` to check your inventory.");
 	}
 
 	equipp(msg) {
@@ -136,7 +134,8 @@ class main extends npc {
 		}
 		User.findOne({id: msg.author.id}, function(err, usser) {
 			const embed = new Discord.RichEmbed()
-			.setTitle("Character Info", "gold:" + usser.gold)
+			.setTitle("Character Info")
+			.addField("gold", usser.gold)
 			.setAuthor(msg.author.username, msg.author.avatarURL)
 
 			.setColor(0x00AE86)
@@ -162,23 +161,30 @@ class main extends npc {
 		});
 	}
 
-	battling(channel, battler) {
+	battling(channell, battler) {
+		var channel = channell;
 		var enemy = enemies.plains.wolf
+		var msg;
+		var didattack = false;
 		User.findOne({id: battler.id}, function(err, user) {
 			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
 			.then(() => {
-				channel.awaitMessages(response => response.content.startsWith('move') , {
+				channel.awaitMessages(response => response.content.startsWith('move')  , {
 					max: 1,
-					time: 30000,
+					time: 15000,
 					errors: ['time'],
 				})
 				.then(collected => {
-					channel.sendMessage(collected.first());
-					attack(collected, enemy, user, channel);
+					msg = collected.first();
+					attack(msg.content, enemy, user, channel);
+					didattack = true;
+					return;
 				})
 				.catch(() => {
-					channel.sendMessage("you didnt make a move in time its the enemies turn");
-					defend(enemy, user);
+					if (didattack == false) {
+						channel.sendMessage("you didnt make a move in time its the enemies turn");
+						defendmonster(enemy, user, channel);
+					}
 				})
 			})
 		})
@@ -186,68 +192,75 @@ class main extends npc {
 
 }
 
-function attack(collected, enemy, user, channel) {
-		if (collected == 'move 1') {
+function tutorial(msg) {
+	msg.reply("Now for a simple Tutorial. We're going to go over how to equipp items first, all you have to do is type `equipp itemname` replace itemname with the items name. Use `inventory` to check your inventory.");
+}
+
+function attackmonster(move, enemy, user, channel) {
+		if (move == 'move 1') {
 			enemy.hp -= user.moves.move1.dmg;
-			if (enenmy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+			if (enemy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
 				return;
-			} else {
-				channel.sendMessage("You did " + user.moves.move1.dmg + " lowering its hp to " + enemy.hp);
-				defend(enemy, user, collected);
 			}
+			channel.sendMessage("You did " + user.moves.move1.dmg + "dmg lowering its hp to " + enemy.hp);
+			defend(enemy, user, channel);
 		}
-		if (collected == 'move 2') {
+		if (move == 'move 2') {
 			enemy.hp -= user.moves.move2.dmg;
-			if (enenmy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+			if (enemy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
 				return;
-			} else {
-				channel.sendMessage("You did " + user.moves.move2.dmg + " lowering its hp to " + enemy.hp);
-				defend(enemy, user, collected);
 			}
+			channel.sendMessage("You did " + user.moves.move2.dmg + "dmg lowering its hp to " + enemy.hp);
+			defend(enemy, user, channel);
 		}
-		if (collected == 'move 3') {
+		if (move == 'move 3') {
 			enemy.hp -= user.moves.move3.dmg;
-			if (enenmy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+			if (enemy.hp <= 0) {
+				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
 				return;
-			} else {
-				channel.sendMessage("You did " + user.moves.move3.dmg + " lowering its hp to " + enemy.hp);
-				defend(enemy, user, collected);
 			}
+			channel.sendMessage("You did " + user.moves.move3.dmg + "dmg lowering its hp to " + enemy.hp);
+			defend(enemy, user, channel);
 		}
-		if (collected == 'move 4') {
+		if (move == 'move 4') {
 			enemy.hp -= user.moves.move4.dmg;
-			if (enenmy.hp <= 0) {
+			if (enemy.hp <= 0) {
 				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
 				return;
-			} else {
-				channel.sendMessage("You did " + user.moves.move4.dmg + " lowering its hp to " + enemy.hp);
-				defend(enemy, user, channel);
 			}
+			channel.sendMessage("You did " + user.moves.move4.dmg + "dmg lowering its hp to " + enemy.hp);
+			defend(enemy, user, channel);
 		}
 	}
 
-function defend(enemy, user, channel) {
+function defendmonster(enemy, user, channel) {
 		user.hp -= enemy.moves.move1.dmg;
+		var msg;
+		var didattack2;
 		if (user.hp <= 0) {
 			channel.sendMessage("You have died D:");
 			return;
 		} else {
-			channel.sendMessage("The monster did " + enemy.moves.move1.dmg + " what will you do?")
+			channel.sendMessage("The monster did " + enemy.moves.move1.dmg + " dmg you have " + user.hp +" hp left, what will you do?")
 			.then(() => {
-				collected.channel.awaitMessages(response => response.content.startsWith('move'), {
+				channel.awaitMessages(response => response.content.startsWith('move'), {
 					max: 1,
-					time: 30000,
+					time: 15000,
 					errors: ['time'],
 				})
 				.then(collected => {
-					attack(collected, user);
+					msg = collected.first();
+					attack(msg.content, enemy, user, channel);
+					didattack2 = true;
+					return;
 				})
 				.catch(() => {
-					channel.sendMessage("you didnt make a move in time its the enemies turn");
-					defend(enemy, user);
+					if (didattack2 == false) {
+						channel.sendMessage("you didnt make a move in time its the enemies turn");
+						defend(enemy, user, channel);
+					}
 				})
 			})
 		}
