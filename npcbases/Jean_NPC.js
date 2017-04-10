@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const token = 'Mjk3MDA3MjIxMjM2MzAxODI1.C76hFA.s9twJqWFlW7n3GZBu82_Tps-cEc';
+const token = 'my bot token';
 
 function commandIs(str, msg){
     return msg.content.toLowerCase().startsWith("!" + str);
