@@ -25,7 +25,13 @@ client.on('ready', () => {
   client.on('message', (message) => {
        var args = message.content.split(/[ ]+/);
        if(commandIs('hello_jean', message)) {
-        message.channel.sendMessage('Hello there, ' + message.author.username);
+         const helloJean = new Discord.RichEmbed()
+         .setTitle("Hello")
+         .setAuthor("Jean", msg.author.avatarURL)
+
+         .setColor(0x00AE86)
+         .addField("Hello there," message.author.username)
+         msg.channel.sendEmbed(helloJean);
           }
           });
 
@@ -34,7 +40,15 @@ client.on('ready', () => {
     client.on('message', (message) => {
       var args = message.content.split(/[ ]+/);
       if(commandIs('lore1_jean', message)) {
-        message.channel.sendMessage('Welcome young adventurer. Before you head out, you should know something. Would you like to listen to my story? listen_jean or leave_jean');
+        const lore1Jean = new Discord.RichEmbed()
+        .setTitle("Lore")
+        .setAuthor("Jean", msg.author.avatarURL)
+
+        .setColor(0x00AE86)
+        .addField("Welcome young adventurer. Before you head out, you should know something. Would you like to listen to my story?")
+        .addField("listen_jean")
+        .addField("leave_jean")
+        msg.channel.sendEmbed(lore1Jean);
       }
     });
 
@@ -42,9 +56,14 @@ client.on('ready', () => {
       client.on('message', (message) => {
         var args = message.content.split(/[ ]+/);
         if(commandIs('listen_jean', message)) {
-          message.channel.sendMessage('Thank you for staying and listening to an old man like me.')
+          const listJean = new Discord.RichEmbed()
+          .setTitle("Listen")
+          .setAuthor("Jean", msg.author.avatarURL)
 
-          message.channel.sendMessage('There are going to be many troubles along your journey. If you believe and have hope, you can survive these horrors, but do not let them taint you.')
+          .setColor(0x00AE86)
+          .addField("Thank you for staying and listening to an old man like me.")
+          .addField("There are going to be many troubles along your journey. If you believe and have hope, you can survive these horrors, but do not let them taint you.")
+          msg.channel.sendEmbed(listJean);
         }
       });
 
@@ -52,7 +71,13 @@ client.on('ready', () => {
       client.on('message', (message) => {
         var args = message.content.split(/[ ]+/);
         if(commandIs('leave_jean', message)) {
-          message.channel.sendMessage('Good-bye then young adventurer. Come back to us safely.')
+          const leafJean = new Discord.RichEmbed()
+          .setTitle("Leave")
+          .setAuthor("Jean", msg.author.avatarURL)
+
+          .setColor(0x00AE86)
+          .addField("Good-bye then young adventurer. Come back to us safely.")
+          msg.channel.sendEmbed(leafJean);
         }
       });
 
@@ -63,7 +88,13 @@ client.on('ready', () => {
        if(commandIs('say_jean', message)) {
         array = [ "We in the village have been going through a tough time.", "I hope that these monsters leave our villagers alone soon. We have had it pretty hard lately."];
         var ra = array[Math.floor(Math.random()*array.length)];
-        message.channel.sendMessage(ra);
+        const sayJean = new Discord.RichEmbed()
+        .setTitle("Say")
+        .setAuthor("Jean", msg.author.avatarURL)
+
+        .setColor(0x00AE86)
+        .addField(ra)
+        msg.channel.sendEmbed(sayJean);
          }
     });
 
