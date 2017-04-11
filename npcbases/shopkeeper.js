@@ -1,18 +1,13 @@
-const npc = require('./npc'),
-	mongoose = require('mongoose'),
-	UserSchema = require('../database/schemas/user'),
-	config = require('./config.json');
+const npc = require('./npc');
 
-/*mongoose.connect(config.url2);
-var User = mongoose.model("users", UserSchema);*/
 var that;
+var User
 
 class shopkeeper extends npc {
 	constructor(name, dialog, items) {
-		super();
-		this.name = name;
-		this.dialog = dialog;
+		super(name, dialog);
 		this.items = items;
+		User = this.User;
 		that = this;
 	}
 
@@ -28,13 +23,13 @@ class shopkeeper extends npc {
 	}
 
 	buying(itemname, msg) {
-		User.find({id: msg.author.id}, function(err, usser) {
+		User.findOne({id: msg.author.id}, function(err, usser) {
 			for (var k = 0; k < that.items.length; k ++) {
 				if (itemname == that.items[k].name) {
-					if (usser[0].gold >= that.items[k].price) {
-						usser[0].gold -= that.items[k].price;
-						usser[0].inventory.push(that.items[k]);
-						usser[0].save(function(err, ussser) {
+					if (usser.gold >= that.items[k].price) {
+						usser.gold -= that.items[k].price;
+						usser.inventory.push(that.items[k]);
+						usser.save(function(err, ussser) {
 							msg.reply("You've bought " + that.items[k].name + " for " + that.items[k].price + ".");
 							return;
 						});

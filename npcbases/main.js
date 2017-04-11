@@ -1,25 +1,22 @@
 const npc = require('./npc'),
-	mongoose = require("mongoose"),
-	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
 	enemies = require('../enemies/index'),
-	Discord = require('discord.js'),
-	config = require('./config.json');
+	Discord = require('discord.js');
 
+var User;
 
-mongoose.connect(config.url);
-var User = mongoose.model("users", UserSchema);
-
-class main extends npc {
+var that;
+var main = class main extends npc {
 	constructor(name, dialog) {
-		super();
-		this.name = name;
-		this.dialog = dialog;
+		super(name, dialog);
+		User = this.User;
+		that = this;
+
 	}
 	createChar(msg) {
-		User.find({id: msg.author.id}, function(err, usser) {
+		User.findOne({id: msg.author.id}, function(err, usser) {
 			if (err) throw err;
-			if (usser.length) {
+			if (usser) {
 				msg.reply("user already exists");
 			}else {
 				var newuser = new User({
@@ -162,10 +159,14 @@ class main extends npc {
 	}
 
 	battling(channell, battler) {
-		var channel = channell;
-		var enemy = enemies.plains.wolf
-		var msg;
-		var didattack = false;
+		let channel = channell;
+		console.log(enemies.plains);
+		var enemy;
+		if (channel.name == 'plains') {
+			enemy = enemies.plains[Math.floor(Math.random() * enemies.plains.length)];
+		}
+		let msg;
+		let didattack = false;
 		User.findOne({id: battler.id}, function(err, user) {
 			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
 			.then(() => {
@@ -176,7 +177,7 @@ class main extends npc {
 				})
 				.then(collected => {
 					msg = collected.first();
-					attack(msg.content, enemy, user, channel);
+					attackmonster(msg.content, enemy, user, channel);
 					didattack = true;
 					return;
 				})
@@ -188,6 +189,49 @@ class main extends npc {
 				})
 			})
 		})
+	}
+
+	duel(msg) {
+		var d = msg.mentions.users.first();
+		var yes;
+		var no = '🚫';
+		var Challenger;
+		var Defender;
+		msg.guild.emojis.forEach(emoji => {
+			if (emoji.name == 'yes') {
+				yes = emoji;
+			}
+		})
+		if (d) {
+			User.findOne({id: msg.author.id}, function(err, Challengerr) {
+				that.Challenger = Challengerr;
+				User.findOne({id: d.id}, async function(err, Defenderr) {
+					that.Defender = Defenderr;
+					const duelembed = new Discord.RichEmbed()
+					.setTitle("Duel")
+					.setAuthor(that.Challenger.name)
+					.addField("CHALLEGED", that.Defender.name + ": you have ben challenged by, " + that.Challenger.name)
+					.addField("Do you accept?")
+					that.duelmsg = await msg.channel.sendEmbed(duelembed);
+					await that.duelmsg.react(yes);
+					that.duelmsg.react(no);
+				})
+			})
+		} else {
+			msg.reply("mention someone to duel");
+		}
+	}
+
+	AcceptDuel(msg) {
+		const duelaccept = new Discord.RichEmbed()
+		.setAuthor("CHALLENGE ACCEPTED")
+		msg.edit({embed: duelaccept});
+	}
+
+	DeclineDuel(msg) {
+		const dueldecline = new Discord.RichEmbed()
+		.setAuthor("CHALLENGE DECLINED")
+		msg.edit({embed: dueldecline});
 	}
 
 }
@@ -204,7 +248,7 @@ function attackmonster(move, enemy, user, channel) {
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move1.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 2') {
 			enemy.hp -= user.moves.move2.dmg;
@@ -213,7 +257,7 @@ function attackmonster(move, enemy, user, channel) {
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move2.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 3') {
 			enemy.hp -= user.moves.move3.dmg;
@@ -222,7 +266,7 @@ function attackmonster(move, enemy, user, channel) {
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move3.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 4') {
 			enemy.hp -= user.moves.move4.dmg;
@@ -231,7 +275,7 @@ function attackmonster(move, enemy, user, channel) {
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move4.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 	}
 
@@ -252,18 +296,19 @@ function defendmonster(enemy, user, channel) {
 				})
 				.then(collected => {
 					msg = collected.first();
-					attack(msg.content, enemy, user, channel);
+					attackmonster(msg.content, enemy, user, channel);
 					didattack2 = true;
 					return;
 				})
 				.catch(() => {
 					if (didattack2 == false) {
 						channel.sendMessage("you didnt make a move in time its the enemies turn");
-						defend(enemy, user, channel);
+						defendmonster(enemy, user, channel);
 					}
 				})
 			})
 		}
 	}
+
 
 module.exports = main;

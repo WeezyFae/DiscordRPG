@@ -1,6 +1,6 @@
 var items = require('../items/index');
 
-exports.wolf = {
+var wolf = {
 	name: "Wolf",
 	hp: 100,
 	gold: 6,
@@ -13,31 +13,29 @@ exports.wolf = {
 			dmg: 12
 		}
 	}
-}
-
-exports.zombie = {
+},
+zombie = {
   name: "Zombie",
   gold: 10,
   lvl: 5,
   exp: 50,
   hp: 100,
-  loot: [items.materials.ironSword, items.name.healthPotion, items.materials.rottenFlesh],
+  loot: [items.weapons.ironSword, items.consumables.healthPotion],
   moves: {
     move1: {
       name: "Bite",
       dmg: 10
     }
   }
-}
-
-exports.slime = {
+},
+slime = {
   name: "Slime",
   gold: 5,
   lvl: 1,
   exp: 10,
   dmg: 5,
   hp: 50,
-  loot: [items.materials.slimeBall, items.name.healthPotion],
+  loot: [items.materials.slimeBall, items.consumables.healthPotion],
   moves: {
     move1: {
       name: "Jump",
@@ -45,3 +43,9 @@ exports.slime = {
     }
   }
 }
+
+var	enemies = [
+		wolf, zombie, slime
+	];
+
+module.exports = enemies;

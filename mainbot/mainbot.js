@@ -17,7 +17,14 @@ client.on('guildMemberAdd', member => {
 	member.sendMessage(member.user + ' Welcome to ' + guild.name);
 });
 
-setInterval(battletime, 30000);
+// setInterval(battletime, 30000);
+
+var Challenger;
+var Defender;
+var yes;
+var no;
+var duelmsg;
+var User = overSeer.User;
 
 function battletime(msg) {
 	if (msg) {
@@ -43,7 +50,20 @@ function battletime(msg) {
 	})
 }
 
-client.on('message', msg => {
+client.on('messageReactionAdd', function(MR, user) {
+	if (overSeer.duelmsg) {
+		if (user.id == overSeer.Defender.id && MR.emoji.name == 'yes') {
+			overSeer.AcceptDuel(overSeer.duelmsg);
+		}
+	}
+	if (overSeer.duelmsg) {
+		if (user.id == overSeer.Defender.id && MR.emoji.name == 'yes') {
+			overSeer.DeclineDuel(overSeer.duelmsg);
+		}
+	}
+})
+
+client.on('message',async msg => {
 	if (msg.content == prefix + "create char") {
 		overSeer.createChar(msg);
 	}
@@ -58,6 +78,9 @@ client.on('message', msg => {
 	}
 	if (msg.content == prefix + 'bless') {
 		overSeer.blessing(msg);
+	}
+	if (msg.content.startsWith(prefix + 'duel')) {
+		overSeer.duel(msg);// '🚫'
 	}
 	if (msg.content == prefix + 'battle me') {
 		battletime(msg);
