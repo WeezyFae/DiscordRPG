@@ -14,3 +14,34 @@ exports.wolf = {
 		}
 	}
 }
+
+exports.zombie = {
+  name: "Zombie",
+  gold: 10,
+  lvl: 5,
+  exp: 50,
+  hp: 100,
+  loot: [items.materials.ironSword, items.name.healthPotion, items.materials.rottenFlesh],
+  moves: {
+    move1: {
+      name: "Bite",
+      dmg: 10
+    }
+  }
+}
+
+exports.slime = {
+  name: "Slime",
+  gold: 5,
+  lvl: 1,
+  exp: 10,
+  dmg: 5,
+  hp: 50,
+  loot: [items.materials.slimeBall, items.name.healthPotion],
+  moves: {
+    move1: {
+      name: "Jump",
+      dmg: 5
+    }
+  }
+}
