@@ -191,7 +191,7 @@ var main = class main extends npc {
 				msg.reply("make a character with `&create char`");
 				return;
 			}
-			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
+			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move 1 1-4 are the usable moves")
 			.then(() => {
 				channel.awaitMessages(response => response.content.startsWith('move')  , {
 					max: 1,
@@ -274,7 +274,10 @@ function lvling(user, channel) {
 		user.maxhp = 130;
 		user.lvl += 1;
 		channel.sendMessage("you lvled up and are lvl 2");
-	}// etc etc
+	}
+	// etc etc
+	
+	user.save();
 }
 
 function loot(enemy, user, channel) {
