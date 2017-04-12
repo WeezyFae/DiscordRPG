@@ -64,7 +64,7 @@ client.on('messageReactionAdd', function(MR, user) {
 	}
 })
 
-client.on('message',async msg => {
+client.on('message',async (msg) => {
 	if (msg.content == prefix + "create char") {
 		overSeer.createChar(msg);
 	}
