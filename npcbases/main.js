@@ -70,6 +70,10 @@ var main = class main extends npc {
 		var itemname = msg.content.slice(8);
 		var USSER
 		User.findOne({id: msg.author.id}, async function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			USSER = usser;
 			for(var i = 0; i < USSER.inventory.length; i++) {
 				if (USSER.inventory[i].name == itemname) {
@@ -102,6 +106,10 @@ var main = class main extends npc {
 
 	inventory(msg) {
 		User.findOne({id: msg.author.id}, function(err, user) {
+			if (!user) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			var ms = "";
 			for (var i = 0; i < user.inventory.length; i++) {
 				ms += user.inventory[i].name;
@@ -117,6 +125,10 @@ var main = class main extends npc {
 		var mentioneddude = msg.mentions.users.first();
 		if (mentioneddude) {
 			User.findOne({id: mentioneddude.id}, function(err, usser) {
+				if (!usser) {
+					msg.reply("make a character with `&create char`");
+					return;
+				}
 				const embed = new Discord.RichEmbed()
 				.setTitle("Character Info")
 				.setAuthor(mentioneddude.username, mentioneddude.avatarURL)
@@ -131,6 +143,10 @@ var main = class main extends npc {
 			return;
 		}
 		User.findOne({id: msg.author.id}, function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			const embed = new Discord.RichEmbed()
 			.setTitle("Character Info")
 			.setAuthor(msg.author.username, msg.author.avatarURL)
@@ -149,6 +165,10 @@ var main = class main extends npc {
 		.then(bd => {
 			if (bd.highestRole.hasPermission('ADMINISTRATOR')) {
 				User.findOne({id: msg.author.id}, function(err, user) {
+					if (!user) {
+						msg.reply("make a character with `&create char`");
+						return;
+					}
 					user.inventory = [items.armor.creatorsHelm, items.armor.creatorsChest, items.armor.creatorsGauntlets, items.armor.creatorsBoots, items.weapons.creatorsSword];
 					user.save(function(err, usser) {
 						msg.reply("You have been Honored for being a Creator");
@@ -167,6 +187,10 @@ var main = class main extends npc {
 		let msg;
 		let didattack = false;
 		User.findOne({id: battler.id}, function(err, user) {
+			if (!user) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
 			.then(() => {
 				channel.awaitMessages(response => response.content.startsWith('move')  , {
@@ -203,8 +227,16 @@ var main = class main extends npc {
 		})
 		if (d) {
 			User.findOne({id: msg.author.id}, function(err, Challengerr) {
+				if (!Challengerr) {
+					msg.reply("make a character with `&create char`");
+					return;
+				}
 				that.Challenger = Challengerr;
 				User.findOne({id: d.id}, async function(err, Defenderr) {
+					if (!Defenderr) {
+						msg.reply("they dont have an acount");
+						return;
+					}
 					that.Defender = Defenderr;
 					const duelembed = new Discord.RichEmbed()
 					.setTitle("Duel")

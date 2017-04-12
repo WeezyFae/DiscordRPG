@@ -14,8 +14,8 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
-	member.sendMessage(member.user + ' Welcome to ' + guild.name);
-	member.addRole(297187240071659520);
+	member.sendMessage(member.user + ' Welcome to ' + member.guild.name + ' hope you enjoy the beta check the gettingstarted channel');
+	member.addRole('297187240071659520');
 });
 
 // setInterval(battletime, 30000);

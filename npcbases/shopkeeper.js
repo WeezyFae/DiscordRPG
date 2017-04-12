@@ -28,6 +28,10 @@ class shopkeeper extends npc {
 		var Item;
 		var found = false;
 		User.findOne({id: msg.author.id}, function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			for (var k = 0; k < Items.length; k ++) {
 				if (itemname == Items[k].name) {
 					Item = Items[k];
@@ -53,6 +57,10 @@ class shopkeeper extends npc {
 	selling(itemname, msg) {
 		var iprice;
 		User.findOne({id: msg.author.id}, function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			if (err) console.error(err);
 			for (var h = 0; h < usser.inventory.length; h++) {
 				if (itemname == usser.inventory[h].name) {
