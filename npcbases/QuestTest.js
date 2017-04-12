@@ -21,6 +21,11 @@ function commandIs(str, msg){
   return msg.content.toLowerCase().startsWith(prefix + str);
 }
 
+function reward1(user, channel) {
+  user.xp += 20;
+  user.gold += 40;
+}
+
   client.on('message', (message) => {
     var args = message.content.split(/[ ]+/);
     if(commandIs('hello quest', message)) {
@@ -33,6 +38,16 @@ function commandIs(str, msg){
     var args = message.content.split(/[ ]+/);
     if(commandIs('questgive', message)) {
       message.channel.sendMessage('I would like you to go out to the fields and kill 5 monsters.')
+    }
+  });
+
+  client.on('message', (message) => {
+    var args = message.content.split(/[ ]+/);
+    if(commandIs('endquest 1', message)) {
+      if (user.questKill >= 5) {
+        message.channel.sendMessage('You have done well! You killed ' + uses.questKill + ' monsters!\n I have an reward for you! You gain 20 xp and 40 gold.')
+        reward1();
+      }
     }
   });
 
