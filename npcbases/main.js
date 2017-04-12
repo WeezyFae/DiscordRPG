@@ -118,14 +118,14 @@ var main = class main extends npc {
 		if (mentioneddude) {
 			User.findOne({id: mentioneddude.id}, function(err, usser) {
 				const embed = new Discord.RichEmbed()
-				.setTitle("Character Info", "gold:" + usser.gold)
+				.setTitle("Character Info")
 				.setAuthor(mentioneddude.username, mentioneddude.avatarURL)
 
 				.setColor(0x00AE86)
-				.addField("stats", "list of stats")
-				.addField("str", usser.stats.str)
-				.addField("vit", usser.stats.vit)
-				.addField("dex", usser.stats.dex)
+				.addField("hp", usser.maxhp)
+				.addField("gold", usser.gold)
+				.addField("stats", "**str**:" + usser.stats.str + " **vit**:" + usser.stats.vit + " **dex**:" + usser.stats.dex)
+				.addField("exp", usser.exp)
 				msg.channel.sendEmbed(embed);
 			});
 			return;
@@ -133,14 +133,13 @@ var main = class main extends npc {
 		User.findOne({id: msg.author.id}, function(err, usser) {
 			const embed = new Discord.RichEmbed()
 			.setTitle("Character Info")
-			.addField("gold", usser.gold)
 			.setAuthor(msg.author.username, msg.author.avatarURL)
 
 			.setColor(0x00AE86)
-			.addField("stats", "list of stats")
-			.addField("str", usser.stats.str)
-			.addField("vit", usser.stats.vit)
-			.addField("dex", usser.stats.dex)
+			.addField("hp", usser.maxhp)
+			.addField("gold", usser.gold)
+			.addField("stats", "**str**:" + usser.stats.str + " **vit**:" + usser.stats.vit + " **dex**:" + usser.stats.dex)
+			.addField("exp", usser.exp)
 			msg.channel.sendEmbed(embed);
 		});
 	}
@@ -238,6 +237,23 @@ var main = class main extends npc {
 
 }
 
+function lvling(user, channel) {
+	if (user.exp >= 100) {
+		user.maxhp = 130;
+		user.lvl += 1;
+		channel.sendMessage("you lvled up and are lvl 2");
+	}// etc etc
+}
+
+function loot(enemy, user, channel) {
+	user.hp = user.maxhp;
+	user.gold += enemy.gold;
+	user.exp += enemy.exp;
+	user.save();
+	lvling(user, channel);
+
+}
+
 function DefendersTurn(msg, Defender, Challenger) {
 	const DTurn = new Discord.RichEmbed()
 	.setTitle("Defenders Turn")
@@ -257,37 +273,52 @@ function tutorial(msg) {
 }
 
 function attackmonster(move, enemy, user, channel) {
+	let weapon;
+	let dmgdone;
+	for (w = 0; w < user.equipped.length; w++) {
+		if (user.equipped[w].type == "Weapon") {
+			weapon = user.equipped[w];
+		}
+	}
 		if (move == 'move 1') {
-			enemy.hp -= user.moves.move1.dmg;
+			dmgdone = user.moves.move1.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move1.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move1.dmg + "dmg lowering its hp to " + enemy.hp);
 			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 2') {
-			enemy.hp -= user.moves.move2.dmg;
+			dmgdone = user.moves.move2.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move2.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move2.dmg + "dmg lowering its hp to " + enemy.hp);
 			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 3') {
-			enemy.hp -= user.moves.move3.dmg;
+			dmgdone = user.moves.move3.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move3.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + "dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move3.dmg + "dmg lowering its hp to " + enemy.hp);
 			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 4') {
-			enemy.hp -= user.moves.move4.dmg;
+			dmgdone = user.moves.move4.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move4.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				channel.sendMessage("you did " + dmgdone + " and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move4.dmg + "dmg lowering its hp to " + enemy.hp);

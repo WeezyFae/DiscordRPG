@@ -15,7 +15,6 @@ var BentoBox = new npc.shopkeeper("BentoBox", dialog, itemstosell)
 
 client.on('ready', () => {
 	console.log("I am ready to sell Master");
-	console.log(BentoBox);
 });
 
 client.on('message', msg => {
