@@ -14,6 +14,7 @@ var UserSchema = Schema({
 	gold: Number,
 	lvl: Number,
 	exp: Number,
+	questKill: Number,
 	inventory: Array,
 	equipped: Array,
 	moves: {
