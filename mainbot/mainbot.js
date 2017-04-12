@@ -53,12 +53,12 @@ function battletime(msg) {
 client.on('messageReactionAdd', function(MR, user) {
 	if (overSeer.duelmsg) {
 		if (user.id == overSeer.Defender.id && MR.emoji.name == 'yes') {
-			overSeer.AcceptDuel(overSeer.duelmsg);
+			overSeer.AcceptDuel(overSeer.duelmsg, overSeer.Defender, overSeer.Challenger);
 		}
 	}
 	if (overSeer.duelmsg) {
-		if (user.id == overSeer.Defender.id && MR.emoji.name == 'yes') {
-			overSeer.DeclineDuel(overSeer.duelmsg);
+		if (user.id == overSeer.Defender.id && MR.emoji.name == '🚫') {
+			overSeer.DeclineDuel(overSeer.duelmsg, overSeer.Defender, overSeer.Challenger);
 		}
 	}
 })

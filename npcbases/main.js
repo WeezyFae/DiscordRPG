@@ -68,27 +68,28 @@ var main = class main extends npc {
 
 	equipp(msg) {
 		var itemname = msg.content.slice(8);
-		User.findOne({id: msg.author.id}, function(err, usser) {
-			for(var i = 0; i < usser.inventory.length; i++) {
-				if (usser.inventory[i].name == itemname) {
-					var Item = usser.inventory[i];
-					for (var j = 0; j < usser.equipped.length; j++) {
-						if (Item.type == usser.equipped[j].type) {
-							var UI = usser.equipped[j].name;
-							usser.equipped.push(Item);
-							usser.inventory.splice(j, 1);
-							usser.inventory.push(usser[0].equipped[j]);
-							usser.equipped.splice(j, 1);
-							msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped.");
-							usser.save(function(err, ussser) {
-								return;
-							});
+		var USSER
+		User.findOne({id: msg.author.id}, async function(err, usser) {
+			USSER = usser;
+			for(var i = 0; i < USSER.inventory.length; i++) {
+				if (USSER.inventory[i].name == itemname) {
+					var Item = USSER.inventory[i];
+					for (var j = 0; j < USSER.equipped.length; j++) {
+						if (Item.type == USSER.equipped[j].type) {
+							var UI = USSER.equipped[j];
+							USSER.equipped.push(Item);
+							USSER.inventory.splice(i, 1);
+							USSER.inventory.push(UI);
+							USSER.equipped.splice(j, 1);
+							msg.reply(Item.name + ": Has been equipped and " + UI.name + ": has been unequipped.");
+							await USSER.save();
+							return;
 						}
 					}
-					usser.equipped.push(Item);
-					usser.inventory.splice(i, 1);
+					USSER.equipped.push(Item);
+					USSER.inventory.splice(i, 1);
 					msg.reply(Item.name + ": Has been equipped.");
-					usser.save(function(err, ussser) {
+					USSER.save(function(err, ussser) {
 						return;
 					});
 				}
@@ -160,7 +161,6 @@ var main = class main extends npc {
 
 	battling(channell, battler) {
 		let channel = channell;
-		console.log(enemies.plains);
 		var enemy;
 		if (channel.name == 'plains') {
 			enemy = enemies.plains[Math.floor(Math.random() * enemies.plains.length)];
@@ -222,18 +222,34 @@ var main = class main extends npc {
 		}
 	}
 
-	AcceptDuel(msg) {
+	AcceptDuel(msg, Defender, Challenger) {
 		const duelaccept = new Discord.RichEmbed()
 		.setAuthor("CHALLENGE ACCEPTED")
+		DefendersTurn(msg, Defender, Challenger);
 		msg.edit({embed: duelaccept});
 	}
 
-	DeclineDuel(msg) {
+	DeclineDuel(msg, Defender, Challenger) {
 		const dueldecline = new Discord.RichEmbed()
 		.setAuthor("CHALLENGE DECLINED")
+		msg.clearReactions();
 		msg.edit({embed: dueldecline});
 	}
 
+}
+
+function DefendersTurn(msg, Defender, Challenger) {
+	const DTurn = new Discord.RichEmbed()
+	.setTitle("Defenders Turn")
+	.addField(Defender.name + "'s turn", "which move will you do?")
+	msg.edit({embed: DTurn});
+	attack(msg, Defender, Challenger, "A");
+}
+
+function Attack(msg, Defender, Challenger, turn) {
+	if (turn == "A") {
+
+	}
 }
 
 function tutorial(msg) {
