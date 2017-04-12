@@ -9,7 +9,7 @@ const Discord = require('discord.js'),
 
 var dialog = ["Hello there feel free to check my shop", "I have items in my shop"];
 
-var itemstosell = [items.consumables.healthPotion];
+var itemstosell = [items.consumables.healthPotion, items.weapons.ironSword];
 
 var BentoBox = new npc.shopkeeper("BentoBox", dialog, itemstosell)
 
