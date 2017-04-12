@@ -32,6 +32,7 @@ var main = class main extends npc {
 					gold: 100,
 					lvl: 1,
 					exp: 0,
+					questKill: 0,
 					inventory: [items.armor.starterHelm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],
 					equipped: [],
 					moves: {
@@ -276,7 +277,13 @@ function lvling(user, channel) {
 		channel.sendMessage("you lvled up and are lvl 2");
 	}
 	// etc etc
-	
+
+	user.save();
+}
+
+function getKill(user, channel) {
+	user.questKill += 1;
+
 	user.save();
 }
 
@@ -321,6 +328,7 @@ function attackmonster(move, enemy, user, channel) {
 			if (enemy.hp <= 0) {
 				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
 				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move1.dmg + "dmg lowering its hp to " + enemy.hp);
@@ -332,6 +340,7 @@ function attackmonster(move, enemy, user, channel) {
 			if (enemy.hp <= 0) {
 				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
 				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move2.dmg + "dmg lowering its hp to " + enemy.hp);
@@ -343,6 +352,7 @@ function attackmonster(move, enemy, user, channel) {
 			if (enemy.hp <= 0) {
 				channel.sendMessage("you did " + dmgdone + "dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
 				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move3.dmg + "dmg lowering its hp to " + enemy.hp);
@@ -354,6 +364,7 @@ function attackmonster(move, enemy, user, channel) {
 			if (enemy.hp <= 0) {
 				channel.sendMessage("you did " + dmgdone + " and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
 				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move4.dmg + "dmg lowering its hp to " + enemy.hp);
