@@ -20,8 +20,6 @@ zombie = {
   lvl: 5,
   exp: 50,
   hp: 100,
-  loot: [items.materials.ironSword, items.consumables.healthPotion, items.materials.rottenFlesh],
-=======
   loot: [items.weapons.ironSword, items.consumables.healthPotion],
   moves: {
     move1: {
