@@ -14,10 +14,10 @@ class shopkeeper extends npc {
 	}
 
 	showitems(msg) {
-		var itemss = ", ";
+		var itemss = "";
 		for (var l = 0; l < Items.length; l++) {
 			itemss += Items[l].name;
-			if (l > 0 && l < Items.length) {
+			if (l < Items.length) {
 				itemss += ", ";
 			}
 		}
