@@ -21,7 +21,7 @@ exports.zombie = {
   lvl: 5,
   exp: 50,
   hp: 100,
-  loot: [items.materials.ironSword, items.name.healthPotion, items.materials.rottenFlesh],
+  loot: [items.materials.ironSword, items.consumables.healthPotion, items.materials.rottenFlesh],
   moves: {
     move1: {
       name: "Bite",
@@ -37,7 +37,7 @@ exports.slime = {
   exp: 10,
   dmg: 5,
   hp: 50,
-  loot: [items.materials.slimeBall, items.name.healthPotion],
+  loot: [items.materials.slimeBall, items.consumables.healthPotion],
   moves: {
     move1: {
       name: "Jump",
