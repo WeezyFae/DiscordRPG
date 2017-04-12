@@ -1,25 +1,22 @@
 const npc = require('./npc'),
-	mongoose = require("mongoose"),
-	UserSchema = require('./schemas/user'),
 	items = require('../items/index'),
 	enemies = require('../enemies/index'),
-	Discord = require('discord.js'),
-	config = require('./config.json');
+	Discord = require('discord.js');
 
+var User;
 
-mongoose.connect(config.url);
-var User = mongoose.model("users", UserSchema);
-
-class main extends npc {
+var that;
+var main = class main extends npc {
 	constructor(name, dialog) {
-		super();
-		this.name = name;
-		this.dialog = dialog;
+		super(name, dialog);
+		User = this.User;
+		that = this;
+
 	}
 	createChar(msg) {
-		User.find({id: msg.author.id}, function(err, usser) {
+		User.findOne({id: msg.author.id}, function(err, usser) {
 			if (err) throw err;
-			if (usser.length) {
+			if (usser) {
 				msg.reply("user already exists");
 			}else {
 				var newuser = new User({
@@ -35,6 +32,7 @@ class main extends npc {
 					gold: 100,
 					lvl: 1,
 					exp: 0,
+					questKill: 0,
 					inventory: [items.armor.starterHelm, items.armor.starterChest, items.armor.starterGauntlets, items.armor.starterBoots, items.weapons.starterSword, items.consumables.healthPotion],
 					equipped: [],
 					moves: {
@@ -71,27 +69,32 @@ class main extends npc {
 
 	equipp(msg) {
 		var itemname = msg.content.slice(8);
-		User.findOne({id: msg.author.id}, function(err, usser) {
-			for(var i = 0; i < usser.inventory.length; i++) {
-				if (usser.inventory[i].name == itemname) {
-					var Item = usser.inventory[i];
-					for (var j = 0; j < usser.equipped.length; j++) {
-						if (Item.type == usser.equipped[j].type) {
-							var UI = usser.equipped[j].name;
-							usser.equipped.push(Item);
-							usser.inventory.splice(j, 1);
-							usser.inventory.push(usser[0].equipped[j]);
-							usser.equipped.splice(j, 1);
-							msg.reply(Item.name + ": Has been equipped and " + UI + ": has been unequipped.");
-							usser.save(function(err, ussser) {
-								return;
-							});
+		var USSER
+		User.findOne({id: msg.author.id}, async function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
+			USSER = usser;
+			for(var i = 0; i < USSER.inventory.length; i++) {
+				if (USSER.inventory[i].name == itemname) {
+					var Item = USSER.inventory[i];
+					for (var j = 0; j < USSER.equipped.length; j++) {
+						if (Item.type == USSER.equipped[j].type) {
+							var UI = USSER.equipped[j];
+							USSER.equipped.push(Item);
+							USSER.inventory.splice(i, 1);
+							USSER.inventory.push(UI);
+							USSER.equipped.splice(j, 1);
+							msg.reply(Item.name + ": Has been equipped and " + UI.name + ": has been unequipped.");
+							await USSER.save();
+							return;
 						}
 					}
-					usser.equipped.push(Item);
-					usser.inventory.splice(i, 1);
+					USSER.equipped.push(Item);
+					USSER.inventory.splice(i, 1);
 					msg.reply(Item.name + ": Has been equipped.");
-					usser.save(function(err, ussser) {
+					USSER.save(function(err, ussser) {
 						return;
 					});
 				}
@@ -104,6 +107,10 @@ class main extends npc {
 
 	inventory(msg) {
 		User.findOne({id: msg.author.id}, function(err, user) {
+			if (!user) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			var ms = "";
 			for (var i = 0; i < user.inventory.length; i++) {
 				ms += user.inventory[i].name;
@@ -119,30 +126,37 @@ class main extends npc {
 		var mentioneddude = msg.mentions.users.first();
 		if (mentioneddude) {
 			User.findOne({id: mentioneddude.id}, function(err, usser) {
+				if (!usser) {
+					msg.reply("make a character with `&create char`");
+					return;
+				}
 				const embed = new Discord.RichEmbed()
-				.setTitle("Character Info", "gold:" + usser.gold)
+				.setTitle("Character Info")
 				.setAuthor(mentioneddude.username, mentioneddude.avatarURL)
 
 				.setColor(0x00AE86)
-				.addField("stats", "list of stats")
-				.addField("str", usser.stats.str)
-				.addField("vit", usser.stats.vit)
-				.addField("dex", usser.stats.dex)
+				.addField("hp", usser.maxhp)
+				.addField("gold", usser.gold)
+				.addField("stats", "**str**:" + usser.stats.str + " **vit**:" + usser.stats.vit + " **dex**:" + usser.stats.dex)
+				.addField("exp", usser.exp)
 				msg.channel.sendEmbed(embed);
 			});
 			return;
 		}
 		User.findOne({id: msg.author.id}, function(err, usser) {
+			if (!usser) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
 			const embed = new Discord.RichEmbed()
 			.setTitle("Character Info")
-			.addField("gold", usser.gold)
 			.setAuthor(msg.author.username, msg.author.avatarURL)
 
 			.setColor(0x00AE86)
-			.addField("stats", "list of stats")
-			.addField("str", usser.stats.str)
-			.addField("vit", usser.stats.vit)
-			.addField("dex", usser.stats.dex)
+			.addField("hp", usser.maxhp)
+			.addField("gold", usser.gold)
+			.addField("stats", "**str**:" + usser.stats.str + " **vit**:" + usser.stats.vit + " **dex**:" + usser.stats.dex)
+			.addField("exp", usser.exp)
 			msg.channel.sendEmbed(embed);
 		});
 	}
@@ -152,6 +166,10 @@ class main extends npc {
 		.then(bd => {
 			if (bd.highestRole.hasPermission('ADMINISTRATOR')) {
 				User.findOne({id: msg.author.id}, function(err, user) {
+					if (!user) {
+						msg.reply("make a character with `&create char`");
+						return;
+					}
 					user.inventory = [items.armor.creatorsHelm, items.armor.creatorsChest, items.armor.creatorsGauntlets, items.armor.creatorsBoots, items.weapons.creatorsSword];
 					user.save(function(err, usser) {
 						msg.reply("You have been Honored for being a Creator");
@@ -162,12 +180,22 @@ class main extends npc {
 	}
 
 	battling(channell, battler) {
-		var channel = channell;
-		var enemy = enemies.plains.wolf
-		var msg;
-		var didattack = false;
+		let channel = channell;
+		var enemy;
+		if (channel.name == 'plains') {
+			enemy = enemies.plains[Math.floor(Math.random() * enemies.plains.length)];
+		} else {
+			channel.sendMessage("there are no monsters to fight");
+			return;
+		}
+		let msg;
+		let didattack = false;
 		User.findOne({id: battler.id}, function(err, user) {
-			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move1 1-4 are the usable moves")
+			if (!user) {
+				msg.reply("make a character with `&create char`");
+				return;
+			}
+			channel.sendMessage(battler.username + ": " + enemy.name + " has jumped out what will you do? (to attack use moveNumber such as move 1 1-4 are the usable moves")
 			.then(() => {
 				channel.awaitMessages(response => response.content.startsWith('move')  , {
 					max: 1,
@@ -176,7 +204,7 @@ class main extends npc {
 				})
 				.then(collected => {
 					msg = collected.first();
-					attack(msg.content, enemy, user, channel);
+					attackmonster(msg.content, enemy, user, channel);
 					didattack = true;
 					return;
 				})
@@ -190,6 +218,96 @@ class main extends npc {
 		})
 	}
 
+	duel(msg) {
+		var d = msg.mentions.users.first();
+		var yes;
+		var no = '🚫';
+		var Challenger;
+		var Defender;
+		msg.guild.emojis.forEach(emoji => {
+			if (emoji.name == 'yes') {
+				yes = emoji;
+			}
+		})
+		if (d) {
+			User.findOne({id: msg.author.id}, function(err, Challengerr) {
+				if (!Challengerr) {
+					msg.reply("make a character with `&create char`");
+					return;
+				}
+				that.Challenger = Challengerr;
+				User.findOne({id: d.id}, async function(err, Defenderr) {
+					if (!Defenderr) {
+						msg.reply("they dont have an acount");
+						return;
+					}
+					that.Defender = Defenderr;
+					const duelembed = new Discord.RichEmbed()
+					.setTitle("Duel")
+					.setAuthor(that.Challenger.name)
+					.addField("CHALLEGED", that.Defender.name + ": you have ben challenged by, " + that.Challenger.name)
+					.addField("Do you accept?")
+					that.duelmsg = await msg.channel.sendEmbed(duelembed);
+					await that.duelmsg.react(yes);
+					that.duelmsg.react(no);
+				})
+			})
+		} else {
+			msg.reply("mention someone to duel");
+		}
+	}
+
+	AcceptDuel(msg, Defender, Challenger) {
+		const duelaccept = new Discord.RichEmbed()
+		.setAuthor("CHALLENGE ACCEPTED")
+		DefendersTurn(msg, Defender, Challenger);
+		msg.edit({embed: duelaccept});
+	}
+
+	DeclineDuel(msg, Defender, Challenger) {
+		const dueldecline = new Discord.RichEmbed()
+		.setAuthor("CHALLENGE DECLINED")
+		msg.clearReactions();
+		msg.edit({embed: dueldecline});
+	}
+
+}
+
+function lvling(user, channel) {
+	if (user.exp >= 100) {
+		user.maxhp = 130;
+		user.lvl += 1;
+		channel.sendMessage("you lvled up and are lvl 2");
+	}
+	// etc etc
+}
+
+function getKill(user, channel) {
+	user.questKill += 1;
+	user.save();
+}
+
+function loot(enemy, user, channel) {
+	user.hp = user.maxhp;
+	user.gold += enemy.gold;
+	user.exp += enemy.exp;
+	user.save();
+	lvling(user, channel);
+
+}
+
+function DefendersTurn(msg, Defender, Challenger) {
+	const DTurn = new Discord.RichEmbed()
+	.setTitle("Defenders Turn")
+	.addField(Defender.name + "'s turn", "which move will you do?")
+	msg.edit({embed: DTurn});
+	attack(msg, Defender, Challenger, "A");
+}
+
+function Attack(msg, Defender, Challenger, turn) {
+	if (turn == "A") {
+
+	}
 }
 
 function tutorial(msg) {
@@ -197,41 +315,60 @@ function tutorial(msg) {
 }
 
 function attackmonster(move, enemy, user, channel) {
+	let weapon;
+	let dmgdone;
+	for (w = 0; w < user.equipped.length; w++) {
+		if (user.equipped[w].type == "Weapon") {
+			weapon = user.equipped[w];
+		}
+	}
 		if (move == 'move 1') {
-			enemy.hp -= user.moves.move1.dmg;
+			dmgdone = user.moves.move1.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move1.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move1.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 2') {
-			enemy.hp -= user.moves.move2.dmg;
+			dmgdone = user.moves.move2.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move2.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + " dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move2.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 3') {
-			enemy.hp -= user.moves.move3.dmg;
+			dmgdone = user.moves.move3.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move3.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "exp")
+				channel.sendMessage("you did " + dmgdone + "dmg and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move3.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 		if (move == 'move 4') {
-			enemy.hp -= user.moves.move4.dmg;
+			dmgdone = user.moves.move4.dmg + weapon.dmg;
+			enemy.hp -= user.moves.move4.dmg + weapon.dmg;
 			if (enemy.hp <= 0) {
-				channel.sendMessage("you killed " + enemy.name + " gaining " + enemy.exp + "")
+				channel.sendMessage("you did " + dmgdone + " and killed " + enemy.name + " gaining " + enemy.exp + " exp, " + enemy.gold + " gold");
+				loot(enemy, user, channel);
+				getKill(user, channel);
 				return;
 			}
 			channel.sendMessage("You did " + user.moves.move4.dmg + "dmg lowering its hp to " + enemy.hp);
-			defend(enemy, user, channel);
+			defendmonster(enemy, user, channel);
 		}
 	}
 
@@ -252,18 +389,19 @@ function defendmonster(enemy, user, channel) {
 				})
 				.then(collected => {
 					msg = collected.first();
-					attack(msg.content, enemy, user, channel);
+					attackmonster(msg.content, enemy, user, channel);
 					didattack2 = true;
 					return;
 				})
 				.catch(() => {
 					if (didattack2 == false) {
 						channel.sendMessage("you didnt make a move in time its the enemies turn");
-						defend(enemy, user, channel);
+						defendmonster(enemy, user, channel);
 					}
 				})
 			})
 		}
 	}
+
 
 module.exports = main;

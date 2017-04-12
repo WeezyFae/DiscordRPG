@@ -17,5 +17,6 @@ exports.starterSword = {
 
 exports.ironSword = {
 	name: "Iron Sword",
-	description: "Sword made from Iron. Forged by Dwarves"
+	description: "Sword made from Iron. Forged by Dwarves",
+	type: "Weapon"
 }
