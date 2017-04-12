@@ -14,7 +14,7 @@ client.on('ready', () => {
 });
 
 client.on('guildMemberAdd', member => {
-	member.sendMessage(member.user + ' Welcome to ' + guild.name);
+	member.sendMessage(member.user + ' Welcome to ' + member.guild.name);
 });
 
 setInterval(battletime, 30000);
@@ -39,7 +39,7 @@ function battletime(msg) {
 				}
 			})
 		}
-	
+
 	})
 }
 

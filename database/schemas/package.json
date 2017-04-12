@@ -9,6 +9,6 @@
   "author": "KingCosmic",
   "license": "MIT",
   "dependencies": {
-    "mongoose": "^4.9.3"
+    "mongoose": "^4.9.4"
   }
 }
