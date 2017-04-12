@@ -183,6 +183,9 @@ var main = class main extends npc {
 		var enemy;
 		if (channel.name == 'plains') {
 			enemy = enemies.plains[Math.floor(Math.random() * enemies.plains.length)];
+		} else {
+			channel.sendMessage("there are no monsters to fight");
+			return;
 		}
 		let msg;
 		let didattack = false;
@@ -276,7 +279,7 @@ function lvling(user, channel) {
 		channel.sendMessage("you lvled up and are lvl 2");
 	}
 	// etc etc
-	
+
 	user.save();
 }
 
