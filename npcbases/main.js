@@ -311,7 +311,7 @@ function Attack(msg, Defender, Challenger, turn) {
 }
 
 function tutorial(msg) {
-	msg.reply("Now for a simple Tutorial. We're going to go over how to equipp items first, all you have to do is type `equipp itemname` replace itemname with the items name. Use `inventory` to check your inventory.");
+	msg.reply("Now for a simple Tutorial. We're going to go over how to equipp items first, all you have to do is type `&equipp <itemname>` replace <itemname> with the items name. Use `&inventory` to check your inventory.");
 }
 
 function attackmonster(move, enemy, user, channel) {

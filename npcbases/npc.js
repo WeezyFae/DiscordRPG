@@ -1,9 +1,11 @@
 const mongoose = require("mongoose"),
 	UserSchema = require('./schemas/user'),
+	AdminSchema = require('./schemas/admin'),
 	config = require('./config.json');
 
 mongoose.connect(config.url);
 var User = mongoose.model("users", UserSchema);
+var Admin = mongoose.model("admins", AdminSchema);
 
 class npc {
 	constructor(name, dialog) {
