@@ -22,3 +22,11 @@ exports.ironSword = {
 	dmg: 25,
 	type: "Weapon"
 }
+
+export.silverPistol = {
+        name: "Silver Pistol",
+        description: "Pistol made from silver coins stolen from the prince of luthenia"
+        price: 450,
+        dmg: 33,
+        type: "Weapon"
+
